@@ -30,7 +30,7 @@
             color: #ffb3c1;
             user-select: none;
             z-index: 1;
-            animation: fall 15s linear forwards;
+            animation: fall 10s ease-in-out infinite, sway 5s ease-in-out infinite alternate;
         }
 
         @keyframes fall {
@@ -157,8 +157,8 @@
         }, duration * 1000);
     }
 
-    // 일정 간격으로 하트 생성 (0.4초마다)
-    setInterval(createFallingHeart, 400);
+    // 일정 간격으로 하트 생성 (0.15초마다)
+    setInterval(createFallingHeart, 150);
 
     // 메인 하트 클릭 시 팡 터지는 효과 함수
     function createBurst() {
