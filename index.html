@@ -134,8 +134,14 @@
     // 배경에 하트가 떨어지는 함수
     function createFallingHeart() {
         const heart = document.createElement("div");
-        heart.classList.add("heart-fall", "heart-fall");
-        heart.innerHTML = "❤️","💖";
+        heart.classList.add("heart-fall");
+
+        //1.다양한 하트 목록 배열 생성 
+        const heartSymbols = ["💖", "🧡", "💛", "💚", "💙", "💜"];
+
+        //2. 배열 중에서 랜덤하게 하나를 선택
+        const randomSymbol = heartSymbols[Math.floor(Math.random() * heartStmbols.length)];
+        heart.innerHTML = randomSymbol;
 
         // 랜덤 위치 및 크기, 떨어지는 속도 설정
         heart.style.left = Math.random() * 100 + "vw";
