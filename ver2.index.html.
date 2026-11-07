@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❤️행복한 결혼기념일❤️</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Playfair Display & Pretendard fallback) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Noto Serif KR', serif;
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7aa 35%, #fbcfe8 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(225, 29, 72, 0.08);
+        }
+
+        /* Floating Animation for Hearts */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Main Heart Pulse */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.15); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+
+        .animate-pulse-heart {
+            animation: heartbeat 2.2s infinite ease-in-out;
+        }
+
+        /* Smooth Glow */
+        .glow-text {
+            text-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 min-h-screen select-none">
+
+    <!-- Canvas for Floating Hearts & Interactive Bursts -->
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- Main Container Card -->
+    <main class="relative z-10 w-full max-w-lg glass-card rounded-3xl p-8 md:p-12 text-center transition-all duration-300 transform hover:shadow-2xl my-8">
+        
+        <!-- Animated Heart Header Icon -->
+        <div class="mb-4 inline-block">
+            <span class="animate-pulse-heart inline-block text-6xl md:text-7xl drop-shadow-md">
+                💖
+            </span>
+        </div>
+
+        <!-- Cursive Romantic Subtitle -->
+        <p class="font-cursive text-3xl md:text-4xl text-rose-500 mb-1 glow-text">
+            Happy Anniversary
+        </p>
+
+        <!-- Main Title -->
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2 tracking-wide">
+            부모님 결혼기념일
+        </h1>
+
+        <!-- Couple Names (Easily Customizable) -->
+        <div class="flex items-center justify-center space-x-2 text-lg font-medium text-rose-700/80 mb-8">
+            <span id="name-partner1">박찬식</span>
+            <span class="text-xs text-rose-400">♥</span>
+            <span id="name-partner2">라영숙</span>
+        </div>
+
+        <!-- D-Day Counter Box -->
+        <div class="bg-gradient-to-r from-rose-500/10 via-pink-500/10 to-rose-500/10 border border-rose-200/50 rounded-2xl p-6 mb-8 backdrop-blur-sm">
+            <p class="text-xs md:text-sm font-semibold uppercase tracking-wider text-rose-500 mb-2">
+                29번째의 결혼기념일
+            </p>
+            <div id="dday-count" class="text-4xl md:text-5xl font-extrabold text-rose-600 tracking-tight my-1 glow-text">
+                D+0
+            </div>
+            <p id="wedding-date-display" class="text-xs text-gray-500 mt-2 font-sans">
+                1998년 11월 09일
+            </p>
+        </div>
+
+        <!-- Romantic Message Section -->
+        <div class="space-y-4 text-gray-700 text-sm md:text-base leading-relaxed font-light">
+            <p class="word-keep">
+                함께 웃고, 때로는 아껴주며 지나온 매 순간을<br>
+                떠올리며
+            </p>
+            <p class="word-keep font-normal text-rose-800">
+                오늘도, 내일도 늘 지금처럼 서로 사랑하시길❤️
+            </p>
+        </div>
+
+        <!-- Interactive Hint -->
+        <div class="mt-8 pt-6 border-t border-rose-100/80 text-xs text-rose-400 font-sans tracking-wide">
+            ✨ 화면을 클릭하면 사랑의 하트가 팡팡 터져요 ✨
+        </div>
+    </main>
+
+    <script>
+        // ==========================================
+        // 1. 사용자 설정 (이 부분을 원하는 정보로 수정하세요!)
+        // ==========================================
+        const CONFIG = {
+            weddingDate: "1998-11-09", // 결혼기념일 (YYYY-MM-DD)
+            partner1: "박찬식",           // 신랑/파트너 1 이름
+            partner2: "라영숙"            // 신부/파트너 2 이름
+        };
+
+        // UI에 정보 적용
+        document.getElementById("name-partner1").innerText = CONFIG.partner1;
+        document.getElementById("name-partner2").innerText = CONFIG.partner2;
+
+        const dateObj = new Date(CONFIG.weddingDate);
+        const year = dateObj.getFullYear();
+        const month = dateObj.getMonth() + 1;
+        const day = dateObj.getDate();
+        document.getElementById("wedding-date-display").innerText = `${year}년 ${month}월 ${day}일`;
+
+        // D-Day 계산 함수
+        function calculateDDay() {
+            const today = new Date();
+            const start = new Date(CONFIG.weddingDate);
+            
+            // 날짜 비교 (시/분/초 초기화)
+            today.setHours(0, 0, 0, 0);
+            start.setHours(0, 0, 0, 0);
+
+            const diffTime = today - start;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+            const ddayElement = document.getElementById("dday-count");
+            if (diffDays >= 0) {
+                ddayElement.innerText = `D+${diffDays.toLocaleString()}일`;
+            } else {
+                ddayElement.innerText = `D${diffDays.toLocaleString()}일`;
+            }
+        }
+        calculateDDay();
+
+        // ==========================================
+        // 2. 캔버스 배경 흩날리는 하트 애니메이션 Engine
+        // ==========================================
+        const canvas = document.getElementById("canvas-bg");
+        const ctx = canvas.getContext("2d");
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener("resize", () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // 하트 경로 그리기 함수
+        function drawHeart(ctx, x, y, size, color, opacity) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.translate(x, y);
+            ctx.fillStyle = color;
+            ctx.globalAlpha = opacity;
+            
+            // Heart formula using Bezier curves
+            const topCurveHeight = size * 0.3;
+            ctx.moveTo(0, topCurveHeight);
+            ctx.bezierCurveTo(0, 0, -size / 2, 0, -size / 2, topCurveHeight);
+            ctx.bezierCurveTo(-size / 2, (size + topCurveHeight) / 2, 0, size, 0, size);
+            ctx.bezierCurveTo(0, size, size / 2, (size + topCurveHeight) / 2, size / 2, topCurveHeight);
+            ctx.bezierCurveTo(size / 2, 0, 0, 0, 0, topCurveHeight);
+            
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // 흩날리는 하트 파티클 클래스
+        class FloatingHeart {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 50;
+                this.size = Math.random() * 14 + 10; // 하트 크기
+                this.speedY = Math.random() * 1.2 + 0.6; // 위로 떠오르는 속도
+                this.speedX = Math.cos(Math.random() * Math.PI) * 0.5; // 좌우 흔들림
+                this.opacity = Math.random() * 0.5 + 0.3;
+                this.fadeSpeed = Math.random() * 0.002 + 0.001;
+                
+                // 로맨틱 파스텔 핑크/레드 색상군
+                const colors = [
+                    '#f43f5e', '#fb7185', '#fda4af', 
+                    '#e11d48', '#ec4899', '#f472b6'
+                ];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.swingAngle = Math.random() * Math.PI * 2;
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.swingAngle += 0.02;
+                this.x += Math.sin(this.swingAngle) * 0.8;
+
+                // 화면 밖으로 벗어나면 다시 아래에서 재생성
+                if (this.y < -30) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                drawHeart(ctx, this.x, this.y, this.size, this.color, this.opacity);
+            }
+        }
+
+        // 터지는 인터랙티브 하트 파티클 클래스
+        class BurstHeart {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 16 + 12;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 6 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed - 2; // 상방향 가속도
+                this.gravity = 0.15;
+                this.opacity = 1;
+                this.decay = Math.random() * 0.02 + 0.015;
+
+                const colors = ['#ff2a5f', '#ff5e7e', '#ff85a1', '#ff1493', '#ff69b4'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += this.gravity;
+                this.opacity -= this.decay;
+            }
+
+            draw() {
+                if (this.opacity > 0) {
+                    drawHeart(ctx, this.x, this.y, this.size, this.color, this.opacity);
+                }
+            }
+        }
+
+        // 파티클 생성 및 관리
+        const floatingHearts = Array.from({ length: 35 }, () => new FloatingHeart());
+        let burstHearts = [];
+
+        // 클릭/터치 이벤트 등록
+        function createBurst(e) {
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            
+            if (clientX && clientY) {
+                for (let i = 0; i < 15; i++) {
+                    burstHearts.push(new BurstHeart(clientX, clientY));
+                }
+            }
+        }
+
+        window.addEventListener('click', createBurst);
+        window.addEventListener('touchstart', (e) => { createBurst(e); }, { passive: true });
+
+        // 메인 애니메이션 루프
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // 1. 부드럽게 올라가는 배경 하트 그리기
+            floatingHearts.forEach(heart => {
+                heart.update();
+                heart.draw();
+            });
+
+            // 2. 터지는 클릭 하트 그리기 및 제거
+            for (let i = burstHearts.length - 1; i >= 0; i--) {
+                const burst = burstHearts[i];
+                burst.update();
+                burst.draw();
+                if (burst.opacity <= 0) {
+                    burstHearts.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // 애니메이션 시작
+        animate();
+    </script>
+</body>
+</html>
