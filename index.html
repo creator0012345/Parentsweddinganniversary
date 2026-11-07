@@ -121,7 +121,7 @@
 
 <script>
     // ⚠️ 여기에 결혼식 날짜를 입력하세요 (연도-월-일)
-    const weddingDate = new Date("1998-11-09");
+    const weddingDate = new Date("1997-11-09");
 
     function updateDDay() {
         const today = new Date();
@@ -135,7 +135,7 @@
     function createFallingHeart() {
         const heart = document.createElement("div");
         heart.classList.add("heart-fall");
-        heart.innerHTML = "❤️";
+        heart.innerHTML = "❤️","💖";
 
         // 랜덤 위치 및 크기, 떨어지는 속도 설정
         heart.style.left = Math.random() * 100 + "vw";
